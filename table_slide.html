@@ -1,0 +1,96 @@
+<!doctype html>
+<html dir="ltr" lang="zh-CN">
+    <head>
+        <meta charset="utf-8"/>
+        <title>test</title>
+        <style type="text/css">
+            #table-container{width:40%;overflow: auto;border: 1px solid #DDD;}
+            #table-container table{width: 100%;border-width: 0;border-collapse: collapse;}
+            #table-container table td{padding: 0;border-right: 1px solid #DDD;border-bottom: 1px solid #DDD;background: #FFF;}
+            #table-container .table-right td:last-child{border-right: 0px solid #DDD;}
+            #table-container .table-right tr:last-child td{border-bottom: 0px solid #DDD;}
+            #table-container .table-left tr:last-child td{border-bottom: 0px solid #DDD;}
+            #table-container .table-left{position: fixed;overflow:hidden;z-index:2;}
+            #table-container .table-right{position: relative;z-index:1;}
+        </style>
+        <script type="text/javascript" src="jquery-1.7.1.js"></script>
+    </head>
+    <body>
+        <div id="table-container">
+            <div class="table-left">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                left1111
+                            </td>
+                            <td>
+                                left1111
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                left1111
+                            </td>
+                            <td>
+                                left1111
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-right">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                right9999
+                            </td>
+                            <td>
+                                right2222
+                            </td>
+                            <td>
+                                right2222
+                            </td>
+                            <td>
+                                right2222
+                            </td>
+                            <td>
+                                right2222
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                right6666
+                            </td>
+                            <td>
+                                right2222
+                            </td>
+                            <td>
+                                right2222
+                            </td>
+                            <td>
+                                right2222
+                            </td>
+                            <td>
+                                right2222
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var leftTable = $("#table-container").find(".table-left");
+                var rightTable = $("#table-container").find(".table-right");
+                var ltTableWidth = leftTable.width();
+                rightTable.css("marginLeft", ltTableWidth);
+            });
+        </script>
+    </body>
+</html>
