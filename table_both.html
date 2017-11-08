@@ -1,0 +1,328 @@
+ 
+<!doctype html>
+<html dir="ltr" lang="zh-CN">
+    <head>
+        <meta charset="utf-8"/>
+        <title>类似excel的滚动机制，当移动滚动条时固定table的第一行和第一列</title>
+        <style type="text/css">
+            #table-container{width:50%;height:250px;overflow: auto;border: 1px solid #DDD;}
+            #table-container table{width: 100%;border-width: 0;border-collapse: collapse;}
+            #table-container table td{padding: 0;border-right: 1px solid #DDD;border-bottom: 1px solid #DDD;background: #FFF;}
+            #table-container .table-top td:last-child{border-right: 0px solid #DDD;}
+            #table-container .table-right td:last-child{border-right: 0px solid #DDD;}
+            #table-container .table-right tr:last-child td{border-bottom: 0px solid #DDD;}
+            #table-container .table-left tr:last-child td{border-bottom: 0px solid #DDD;}
+            #table-container td div{display: inline-block;max-width: 200px;margin:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align: left;line-height: 24px;}
+            #table-container .table-lt{position: fixed;z-index:3;}
+            #table-container .table-top{position: fixed;overflow:hidden;z-index:2;}
+            #table-container .table-left{position: fixed;overflow:hidden;z-index:2;}
+            #table-container .table-right{position: relative;z-index:1;}
+            #table-container .table-mask{position: relative;}
+        </style>
+        <script type="text/javascript" src="jquery-1.7.1.js"></script>
+    </head>
+    <body>
+        <div id="table-container">
+            <div class="table-lt">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div>
+                                    header11111
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-top">
+                <div class="table-mask">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div>7789545434</div>
+                                </td>
+                                <td>
+                                    <div>fdffdfdfgdsfdfdf</div>
+                                </td>
+                                <td>
+                                    <div>fdfffdsfasddfdfdfdf</div>
+                                </td>
+                                <td>
+                                    <div>fdffdffdfdfdf</div>
+                                </td>
+                                <td>
+                                    <div>fdffdasdfsdfdfdfdfdfdf</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="table-left">
+                <div class="table-mask">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div>left1111</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>left1111</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>left1111</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>left1111</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>left1111</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>left1111</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>left1111</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>left1111</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="table-right">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div>6566</div>
+                            </td>
+                            <td>
+                                <div>uoifdfdfuiuiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdsfsdfiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiusiouiou</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>6566</div>
+                            </td>
+                            <td>
+                                <div>uoifdfdfuiuiouiouuoifdfdfuiuiouiouuoifdfdfuiuiouiouuoifdfdfuiuiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdsfsdfiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiusiouiou</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>6566</div>
+                            </td>
+                            <td>
+                                <div>uoifdfdfuiuiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdsfsdfiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiusiouiou</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>6566</div>
+                            </td>
+                            <td>
+                                <div>uoifdfdfuiuiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdsfsdfiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiusiouiou</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>6566</div>
+                            </td>
+                            <td>
+                                <div>uoifdfdfuiuiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdsfsdfiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiusiouiou</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>6566</div>
+                            </td>
+                            <td>
+                                <div>uoifdfdfuiuiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdsfsdfiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiusiouiou</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>6566</div>
+                            </td>
+                            <td>
+                                <div>uoifdfdfuiuiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdsfsdfiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiusiouiou</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>6566</div>
+                            </td>
+                            <td>
+                                <div>uoifdfdfuiuiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiufdsfsdfiouiou</div>
+                            </td>
+                            <td>
+                                <div>uoiuiusiouiou</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // 参数初始化
+                var container = $("#table-container");
+                var ltTable = container.find(".table-lt");
+                var topTable = container.find(".table-top");
+                var leftTable = container.find(".table-left");
+                var rightTable = container.find(".table-right");
+                var widthJson = {};
+                var timerLT = null;
+                var ltTableWidth = ltTable.width();
+                var leftTableWidth = leftTable.width();
+                if (leftTableWidth > ltTableWidth) {
+                    ltTableWidth = leftTableWidth;
+                }
+                // 计算各table的宽度以及边距
+                ltTable.width(ltTableWidth);
+                topTable.css("marginLeft", ltTableWidth);
+                leftTable.width(ltTableWidth);
+                rightTable.css("marginLeft", ltTableWidth);
+                var ltTableHeight = ltTable.height();
+                leftTable.css("marginTop", ltTableHeight + "px");
+                rightTable.css("marginTop", ltTableHeight + "px");
+                var containerHeight = container.height();
+                var containerWidth = container.width();
+                topTable.width(containerWidth - ltTableWidth - (container.innerWidth() - container[0].clientWidth));
+                leftTable.height(containerHeight - ltTableHeight - (container.innerHeight() - container[0].clientHeight));
+                // 计算每列表格td的最大宽度数组
+                function setDivWidth(obj) {
+                    $(obj).find("div").each(function (index) {
+                        if (!widthJson[index]) {
+                            widthJson[index] = 0;
+                        }
+                        if (widthJson[index] < $(this).width()) {
+                            widthJson[index] = $(this).width();
+                        }
+                    });
+                }
+                // 获取td宽度
+                topTable.find("tr").each(function () {
+                    setDivWidth(this);
+                });
+                rightTable.find("tr").each(function () {
+                    setDivWidth(this);
+                });
+                // 写入td宽度
+                topTable.find("tr:first div").each(function (index) {
+                    $(this).width(widthJson[index]);
+                });
+                rightTable.find("tr:first div").each(function (index) {
+                    $(this).width(widthJson[index]);
+                });
+                // 处理表头的table位移信息
+                container.scroll(function () {
+                    var currentScrollTop = $(this).scrollTop();
+                    var currentScrollLeft = $(this).scrollLeft();
+                    topTable.find(".table-mask").css("left", -currentScrollLeft + "px");
+                    leftTable.find(".table-mask").css("top", -currentScrollTop + "px");
+                });
+                // 当container的大小变化时，重置topTable的宽度和leftTable的高度
+                timerLT = setInterval(function () {
+                    if (containerWidth != container.width() || containerHeight != container.height()) {
+                        topTable.width(container.width() - ltTableWidth - (container.innerWidth() - container[0].clientWidth));
+                        leftTable.height(container.height() - ltTableHeight - (container.innerHeight() - container[0].clientHeight));
+                        containerWidth = container.width();
+                        containerHeight = container.height();
+                    }
+                }, 0);
+            });
+        </script>
+    </body>
+</html>
