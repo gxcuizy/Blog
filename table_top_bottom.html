@@ -5,13 +5,12 @@
         <meta charset="utf-8"/>
         <title>类似excel的滚动机制，当移动滚动条时固定table的第一行</title>
         <style type="text/css">
-            #table-container{width:50%;height:250px;overflow: auto;border: 1px solid #DDD;}
+            #table-container{width:50%;height:150px;overflow: auto;border: 1px solid #DDD;}
             #table-container table{width: 100%;border-width: 0;border-collapse: collapse;}
-            #table-container table td{padding: 0;border-right: 1px solid #DDD;border-bottom: 1px solid #DDD;background: #FFF;}
+            #table-container table td{padding: 5px;border-right: 1px solid #DDD;border-bottom: 1px solid #DDD;background: #FFF;white-space:nowrap;}
             #table-container .table-top td:last-child{border-right: 0px solid #DDD;}
             #table-container .table-right td:last-child{border-right: 0px solid #DDD;}
             #table-container .table-right tr:last-child td{border-bottom: 0px solid #DDD;}
-            #table-container td div{display: inline-block;max-width: 300px;margin:5px;overflow:hidden;white-space:nowrap;text-align: left;line-height: 24px;}
             #table-container .table-top{position: fixed;overflow:hidden;z-index:2;}
             #table-container .table-right{position: relative;z-index:1;}
             #table-container .table-mask{position: relative;}
@@ -26,19 +25,19 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div>7789545434</div>
+                                    7789545434
                                 </td>
                                 <td>
-                                    <div>fdffdfdfgdsfdfdf</div>
+                                    fdffdfdfgdsfdfdf
                                 </td>
                                 <td>
-                                    <div>fdfffdsfasddfdfdfdf</div>
+                                    fdfffdsfasddfdfdfdf
                                 </td>
                                 <td>
-                                    <div>fdffdffdfdfdf</div>
+                                    fdffdffdfdfdf
                                 </td>
                                 <td>
-                                    <div>fdffdasdfsdfdfdfdfdfdf</div>
+                                    fdffdasdfsdfdfdfdfdfdf
                                 </td>
                             </tr>
                         </tbody>
@@ -50,138 +49,138 @@
                     <tbody>
                         <tr>
                             <td>
-                                <div>6566</div>
+                                6566
                             </td>
                             <td>
-                                <div>uoifdfdfuiuiouiou</div>
+                                uoifdfdfuiuiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdiouiou</div>
+                                uoiuiufdiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdsfsdfiouiou</div>
+                                uoiuiufdsfsdfiouiou
                             </td>
                             <td>
-                                <div>uoiuiusiouiou</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div>6566</div>
-                            </td>
-                            <td>
-                                <div>545454545</div>
-                            </td>
-                            <td>
-                                <div>uoiuiufdiouiou</div>
-                            </td>
-                            <td>
-                                <div>uoiuiufdsfsdfiouiou</div>
-                            </td>
-                            <td>
-                                <div>uoiuiusiouiou</div>
+                                uoiuiusiouiou
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div>6566</div>
+                                6566
                             </td>
                             <td>
-                                <div>uoifdfdfuiuiouiou</div>
+                                uoifdfdfuiuiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdiouiou</div>
+                                uoiuiufdiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdsfsdfiouiou</div>
+                                uoiuiufdsfsdfiouiou
                             </td>
                             <td>
-                                <div>uoiuiusiouiou</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div>6566</div>
-                            </td>
-                            <td>
-                                <div>uoifdfdfuiuiouiou</div>
-                            </td>
-                            <td>
-                                <div>uoiuiufdiouiou</div>
-                            </td>
-                            <td>
-                                <div>uoiuiufdsfsdfiouiou</div>
-                            </td>
-                            <td>
-                                <div>uoiuiusiouiou</div>
+                                uoiuiusiouiou
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div>6566</div>
+                                6566
                             </td>
                             <td>
-                                <div>uoifdfdfuiuiouiou</div>
+                                uoifdfdfuiuiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdiouiou</div>
+                                uoiuiufdiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdsfsdfiouiou</div>
+                                uoiuiufdsfsdfiouiou
                             </td>
                             <td>
-                                <div>uoiuiusiouiou</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div>6566</div>
-                            </td>
-                            <td>
-                                <div>uoifdfdfuiuiouiou</div>
-                            </td>
-                            <td>
-                                <div>uoiuiufdiouiou</div>
-                            </td>
-                            <td>
-                                <div>uoiuiufdsfsdfiouiou</div>
-                            </td>
-                            <td>
-                                <div>uoiuiusiouiou</div>
+                                uoiuiusiouiou
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div>6566</div>
+                                6566
                             </td>
                             <td>
-                                <div>uoifdfdfuiuiouiou</div>
+                                uoifdfdfuiuiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdiouiou</div>
+                                uoiuiufdiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdsfsdfiouiou</div>
+                                uoiuiufdsfsdfiouiou
                             </td>
                             <td>
-                                <div>uoiuiusiouiou</div>
+                                uoiuiusiouiou
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div>6566</div>
+                                6566
                             </td>
                             <td>
-                                <div>uoifdfdfuiuiouiou</div>
+                                uoifdfdfuiuiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdiouiou</div>
+                                uoiuiufdiouiou
                             </td>
                             <td>
-                                <div>uoiuiufdsfsdfiouiou</div>
+                                uoiuiufdsfsdfiouiou
                             </td>
                             <td>
-                                <div>uoiuiusiouiou</div>
+                                uoiuiusiouiou
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                6566
+                            </td>
+                            <td>
+                                uoifdfdfuiuiouiou
+                            </td>
+                            <td>
+                                uoiuiufdiouiou
+                            </td>
+                            <td>
+                                uoiuiufdsfsdfiouiou
+                            </td>
+                            <td>
+                                uoiuiusiouiou
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                6566
+                            </td>
+                            <td>
+                                uoifdfdfuiuiouiou
+                            </td>
+                            <td>
+                                uoiuiufdiouiou
+                            </td>
+                            <td>
+                                uoiuiufdsfsdfiouiou
+                            </td>
+                            <td>
+                                uoiuiusiouiou
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                6566
+                            </td>
+                            <td>
+                                uoifdfdfuiuiouiou
+                            </td>
+                            <td>
+                                uoiuiufdiouiou
+                            </td>
+                            <td>
+                                uoiuiufdsfsdfiouiou
+                            </td>
+                            <td>
+                                uoiuiusiouiou
                             </td>
                         </tr>
                     </tbody>
@@ -202,7 +201,7 @@
                 topTable.width(containerWidth - (container.innerWidth() - container[0].clientWidth));
                 // 计算每列表格td的最大宽度数组
                 function setDivWidth(obj) {
-                    $(obj).find("div").each(function (index) {
+                    $(obj).find("td").each(function (index) {
                         if (!widthJson[index]) {
                             widthJson[index] = 0;
                         }
@@ -210,7 +209,6 @@
                             widthJson[index] = $(this).width();
                         }
                     });
-                    console.log(widthJson);
                 }
                 // 获取td宽度
                 topTable.find("tr").each(function () {
@@ -220,11 +218,11 @@
                     setDivWidth(this);
                 });
                 // 写入td宽度
-                topTable.find("tr:first div").each(function (index) {
-                    $(this).width(widthJson[index]);
+                topTable.find("tr:first td").each(function (index) {
+                    $(this).css('min-width', widthJson[index]);
                 });
-                rightTable.find("tr:first div").each(function (index) {
-                    $(this).width(widthJson[index]);
+                rightTable.find("tr:first td").each(function (index) {
+                    $(this).css('min-width', widthJson[index]);
                 });
                 // 处理表头的table位移信息
                 container.scroll(function () {
