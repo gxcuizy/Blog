@@ -229,6 +229,12 @@
                     var currentScrollLeft = $(this).scrollLeft();
                     topTable.find(".table-mask").css("left", -currentScrollLeft + "px");
                 });
+                $(document).scroll(function () {
+                    var currentScrollTop = $(this).scrollTop();
+                    var currentScrollLeft = $(this).scrollLeft();
+                    topTable.css("marginTop", -currentScrollTop + "px");
+                    topTable.css("marginLeft", -currentScrollLeft + "px");
+                });
                 // 当container的大小变化时，重置topTable的宽度和leftTable的高度
                 timerLT = setInterval(function () {
                     if (containerWidth != container.width() || containerHeight != container.height()) {

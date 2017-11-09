@@ -286,6 +286,7 @@
                             widthJson[index] = $(this).width();
                         }
                     });
+                    console.log(widthJson);
                 }
                 // 获取td宽度
                 topTable.find("tr").each(function () {
@@ -307,6 +308,16 @@
                     var currentScrollLeft = $(this).scrollLeft();
                     topTable.find(".table-mask").css("left", -currentScrollLeft + "px");
                     leftTable.find(".table-mask").css("top", -currentScrollTop + "px");
+                });
+                $(document).scroll(function () {
+                    var currentScrollTop = $(this).scrollTop();
+                    var currentScrollLeft = $(this).scrollLeft();
+                    ltTable.css("marginTop", -currentScrollTop + "px");
+                    ltTable.css("marginLeft", -currentScrollLeft + "px");
+                    topTable.css("marginTop", -currentScrollTop + "px");
+                    topTable.css("marginLeft", ltTableWidth - currentScrollLeft + "px");
+                    leftTable.css("marginTop", ltTableHeight - currentScrollTop + "px");
+                    leftTable.css("marginLeft", -currentScrollLeft + "px");
                 });
                 // 当container的大小变化时，重置topTable的宽度和leftTable的高度
                 timerLT = setInterval(function () {

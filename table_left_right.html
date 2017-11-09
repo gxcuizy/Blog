@@ -90,6 +90,12 @@
                 var rightTable = $("#table-container").find(".table-right");
                 var ltTableWidth = leftTable.width();
                 rightTable.css("marginLeft", ltTableWidth);
+                $(document).scroll(function () {
+                    var currentScrollTop = $(this).scrollTop();
+                    var currentScrollLeft = $(this).scrollLeft();
+                    leftTable.css("marginTop", 0 - currentScrollTop + "px");
+                    leftTable.css("marginLeft", -currentScrollLeft + "px");
+                });
             });
         </script>
     </body>
