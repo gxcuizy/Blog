@@ -16,7 +16,7 @@ function bubble_sort($arr) {
         for ($j = 0; $j < $len - $i; $j++) {
             // 大的数，交换位置，往后挪
             if ($arr[$j] > $arr[$j + 1]) {
-                $temp = $arr[$j];
+                $temp = $arr[$j + 1];
                 $arr[$j + 1] = $arr[$j];
                 $arr[$j] = $temp;
             }
