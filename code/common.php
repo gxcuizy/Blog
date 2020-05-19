@@ -503,6 +503,13 @@ function check_mobile($mobile = '')
     return $res;
 }
 
+function check_telephone($telephone = '')
+{
+    $pattern = '/^(0[0-9]{2,3})?[-]?\d{7,8}$/';
+    $res = preg_match($pattern, $telephone) ? true : false;
+    return $res;
+}
+
 /**
  * 校验是否为合法格式的邮箱
  * @param string $email 邮箱
@@ -516,7 +523,67 @@ function check_email($email = '')
 }
 
 /**
- * 检查是否为合法格式的日期
+ * 校验是否为合法的身份证号
+ * @param string $id_card 身份证号
+ * @return bool
+ */
+function check_id_card($id_card = '')
+{
+    $pattern = '/^\d{6}((1[89])|(2\d))\d{2}((0\d)|(1[0-2]))((3[01])|([0-2]\d))\d{3}(\d|X)$/i';
+    $res = preg_match($pattern, $id_card) ? true : false;
+    return $res;
+}
+
+/**
+ *  校验是否为合法的IP地址
+ * @param string $ip IP地址
+ * @return bool
+ */
+function check_ip($ip = '')
+{
+    $pattern = '/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/';
+    $res = preg_match($pattern, $ip) ? true : false;
+    return $res;
+}
+
+/**
+ * 校验指定范围长度的字符串名称
+ * @param string $name 名称
+ * @param string $char 字符串类型：EN英文，CN中文，ALL全部字符
+ * @param int $min 最小长度
+ * @param int $max 最大长度
+ * @return bool
+ */
+function check_name($name = '', $char = 'ALL', $min = 2, $max = 20)
+{
+    switch ($char) {
+        case 'EN':
+            $pattern = '/^[a-zA-Z]{' . $min . ',' . $max . '}$/iu';
+            break;
+        case 'CN':
+            $pattern = '/^[_\x{4e00}-\x{9fa5}]{' . $min . ',' . $max . '}$/iu';
+            break;
+        default:
+            $pattern = '/^[_\w\d\x{4e00}-\x{9fa5}]{' . $min . ',' . $max . '}$/iu';
+    }
+    $res = preg_match($pattern, $name) ? true : false;
+    return $res;
+}
+
+/**
+ * 校验是否为合法的邮政编码
+ * @param string $code 邮政编码
+ * @return bool
+ */
+function check_post_code($code = '')
+{
+    $pattern = '/\d{6}/';
+    $res = preg_match($pattern, $code) ? true : false;
+    return $res;
+}
+
+/**
+ * 校验是否为合法格式的日期
  * @param string $date 日期
  * @param string $sep 分隔符，默认为横线-
  * @return bool
@@ -533,7 +600,7 @@ function check_date($date = '', $sep = '-')
 }
 
 /**
- * 检查是否为合法格式的时间
+ * 校验是否为合法格式的时间
  * @param string $time 时分秒时间
  * @param string $sep 分隔符，默认为冒号:
  * @return bool
@@ -617,5 +684,236 @@ function dump_plus($data, $exit = true)
     // 是否中断执行
     if ($exit) {
         exit();
+    }
+}
+
+/**
+ * 通过IP地址获取位置信息
+ * markdown快速使用 ![](https://tool.lu/netcard/)
+ * @param string $ip IP地址
+ * @return mixed
+ */
+function get_ip_info($ip = '')
+{
+    $api = 'http://www.geoplugin.net/json.gp?ip=';
+    $res_data = file_get_contents($api . $ip);
+    $res = json_decode($res_data, true);
+    $data = [];
+    if ($res['geoplugin_status'] == '200') {
+        // 国家
+        $data['country'] = $res['geoplugin_countryName'];
+        // 省份
+        $data['province'] = $res['geoplugin_regionName'];
+        // 城市
+        $data['city'] = $res['geoplugin_city'];
+        // 经度
+        $data['latitude'] = $res['geoplugin_latitude'];
+        // 纬度
+        $data['longitude'] = $res['geoplugin_longitude'];
+        // 其他值，根据需要自定义
+    }
+    return $data;
+}
+
+/**
+ * 发红包，金额随机
+ * @param int $total 红包金额
+ * @param int $num 红包个数
+ * @param float $min 红包最小金额
+ * @@return array
+ */
+function get_red_packet($total = 0, $num = 1, $min = 0.01)
+{
+    $data = [];
+    for ($i = 1; $i < $num; $i++) {
+        // 随机金额安全上限控制
+        $safe_total = ($total - ($num - $i) * $min) / ($num - $i);
+        $money = mt_rand($min * 100, $safe_total * 100) / 100;
+        $total -= $money;
+        // sort为领取顺序，money为红包金额，balance为领取后的余额
+        $data[] = [
+            'sort' => $i,
+            'money' => $money,
+            'balance' => $total
+        ];
+    }
+    // 最后一个红包
+    $data[] = [
+        'sort' => $num,
+        'money' => $total,
+        'balance' => 0
+    ];
+    return $data;
+}
+
+/**
+ * 获取文字的首字母
+ * @param string $str 文字字符串
+ * @return string
+ */
+function get_first_char($str = '')
+{
+    $first_char = $str[0];
+    // 判断是否为字符串
+    if (ord($first_char) >= ord("A") && ord($first_char) <= ord("z")) {
+        return strtoupper($first_char);
+    }
+    $str = iconv("UTF-8", "gb2312", $str);
+    $asc = ord($str[0]) * 256 + ord($str[1]) - 65536;
+    $first_char = '';
+    if ($asc >= -20319 and $asc <= -20284) $first_char = "A";
+    else if ($asc >= -20283 and $asc <= -19776) $first_char = "B";
+    else if ($asc >= -19775 and $asc <= -19219) $first_char = "C";
+    else if ($asc >= -19218 and $asc <= -18711) $first_char = "D";
+    else if ($asc >= -18710 and $asc <= -18527) $first_char = "E";
+    else if ($asc >= -18526 and $asc <= -18240) $first_char = "F";
+    else if ($asc >= -18239 and $asc <= -17923) $first_char = "G";
+    else if ($asc >= -17922 and $asc <= -17418) $first_char = "H";
+    else if ($asc >= -17417 and $asc <= -16475) $first_char = "J";
+    else if ($asc >= -16474 and $asc <= -16213) $first_char = "K";
+    else if ($asc >= -16212 and $asc <= -15641) $first_char = "L";
+    else if ($asc >= -15640 and $asc <= -15166) $first_char = "M";
+    else if ($asc >= -15165 and $asc <= -14923) $first_char = "N";
+    else if ($asc >= -14922 and $asc <= -14915) $first_char = "O";
+    else if ($asc >= -14914 and $asc <= -14631) $first_char = "P";
+    else if ($asc >= -14630 and $asc <= -14150) $first_char = "Q";
+    else if ($asc >= -14149 and $asc <= -14091) $first_char = "R";
+    else if ($asc >= -14090 and $asc <= -13319) $first_char = "S";
+    else if ($asc >= -13318 and $asc <= -12839) $first_char = "T";
+    else if ($asc >= -12838 and $asc <= -12557) $first_char = "W";
+    else if ($asc >= -12556 and $asc <= -11848) $first_char = "X";
+    else if ($asc >= -11847 and $asc <= -11056) $first_char = "Y";
+    else if ($asc >= -11055 and $asc <= -10247) $first_char = "Z";
+    return $first_char;
+}
+
+/**
+ * 通过身份证获取所属星座
+ * @param string $id_card 身份证号
+ * @return string
+ */
+function get_constellation_by_card($id_card = '')
+{
+    // 截取生日的时间
+    $birthday = substr($id_card, 10, 4);
+    $month = substr($birthday, 0, 2);
+    $day = substr($birthday, 2);
+    // 判断时间范围获取星座
+    $constellation = "";
+    if (($month == 1 && $day >= 21) || ($month == 2 && $day <= 19)) $constellation = "水瓶座";
+    else if (($month == 2 && $day >= 20) || ($month == 3 && $day <= 20)) $constellation = "双鱼座";
+    else if (($month == 3 && $day >= 21) || ($month == 4 && $day <= 20)) $constellation = "白羊座";
+    else if (($month == 4 && $day >= 21) || ($month == 5 && $day <= 21)) $constellation = "金牛座";
+    else if (($month == 5 && $day >= 22) || ($month == 6 && $day <= 21)) $constellation = "双子座";
+    else if (($month == 6 && $day >= 22) || ($month == 7 && $day <= 22)) $constellation = "巨蟹座";
+    else if (($month == 7 && $day >= 23) || ($month == 8 && $day <= 23)) $constellation = "狮子座";
+    else if (($month == 8 && $day >= 24) || ($month == 9 && $day <= 23)) $constellation = "处女座";
+    else if (($month == 9 && $day >= 24) || ($month == 10 && $day <= 23)) $constellation = "天秤座";
+    else if (($month == 10 && $day >= 24) || ($month == 11 && $day <= 22)) $constellation = "天蝎座";
+    else if (($month == 11 && $day >= 23) || ($month == 12 && $day <= 21)) $constellation = "射手座";
+    else if (($month == 12 && $day >= 22) || ($month == 1 && $day <= 20)) $constellation = "魔羯座";
+    return $constellation;
+}
+
+/**
+ * 通过身份证获取所属生肖
+ * @param string $id_card 身份证号
+ * @return string
+ */
+function get_animal_by_card($id_card = '')
+{
+    // 获取出生年份
+    $start = 1901;
+    $end = substr($id_card, 6, 4);
+    $remainder = ($start - $end) % 12;
+    // 计算所属生肖
+    $animal = "";
+    if ($remainder == 1 || $remainder == -11) $animal = "鼠";
+    else if ($remainder == 0) $animal = "牛";
+    else if ($remainder == 11 || $remainder == -1) $animal = "虎";
+    else if ($remainder == 10 || $remainder == -2) $animal = "兔";
+    else if ($remainder == 9 || $remainder == -3) $animal = "龙";
+    else if ($remainder == 8 || $remainder == -4) $animal = "蛇";
+    else if ($remainder == 7 || $remainder == -5) $animal = "马";
+    else if ($remainder == 6 || $remainder == -6) $animal = "羊";
+    else if ($remainder == 5 || $remainder == -7) $animal = "猴";
+    else if ($remainder == 4 || $remainder == -8) $animal = "鸡";
+    else if ($remainder == 3 || $remainder == -9) $animal = "狗";
+    else if ($remainder == 2 || $remainder == -10) $animal = "猪";
+    return $animal;
+}
+
+/**
+ * 通过身份证获取性别
+ * @param string $id_card 身份证号
+ * @return string
+ */
+function get_sex($id_card = '')
+{
+    // 第十七位数字，偶数标识女性，奇数标识男性
+    $sex_num = substr($id_card, 16, 1);
+    $sex = $sex_num % 2 === 0 ? '女' : '男';
+    return $sex;
+}
+
+/**
+ * 通过身份证判断是否成年
+ * @param string $id_card 身份证号
+ * @return bool
+ */
+function check_adult($id_card = '')
+{
+    // 获取出生年月日
+    $year = substr($id_card, 6, 4);
+    $month = substr($id_card, 10, 2);
+    $day = substr($id_card, 12, 2);
+    // 18年的秒数
+    $adult_time = 18 * 365 * 24 * 60 * 60;
+    // 出生年月日的时间戳
+    $birthday_time = mktime(0, 0, 0, $month, $day, $year);
+    // 是否成年，默认未成年
+    $is_adult = false;
+    // 超过18岁则成年
+    if ((time() - $birthday_time) > $adult_time) {
+        $is_adult = true;
+    }
+    return $is_adult;
+}
+
+/**
+ * 删除指定目录下的文件夹和文件
+ * @param string $path 目录路径
+ */
+function delete_dir($path = '')
+{
+    // 为空默认当前目录
+    if ($path == '') {
+        $path = realpath('.');
+    }
+    // 判断目录是否存在
+    if (!is_dir($path)) {
+        exit('目录【' . $path . '】不存在');
+    }
+    // 删除path目录最后的/
+    if (substr($path, -1, 1) == '/') {
+        $path = substr_replace($path, '', -1, 1);
+    }
+    // 扫描一个文件夹内的所有文件夹和文件
+    $file_arr = scandir($path);
+    foreach ($file_arr as $file) {
+        // 排除当前目录.与父级目录..
+        if ($file != "." && $file != "..") {
+            // 如果是目录则递归子目录
+            $this_file = $path . DIRECTORY_SEPARATOR . $file;
+            if (is_dir($this_file)) {
+                // 继续循环遍历子目录
+                delete_dir($this_file);
+                // 删除空文件夹
+                @rmdir($this_file);
+            } else if (is_file($this_file)) {
+                // 文件类型直接删除
+                unlink($this_file);
+            }
+        }
     }
 }
