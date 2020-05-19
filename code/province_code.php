@@ -1,5 +1,5 @@
 <?php
-$area = [
+$province_code = [
     11 => "北京",
     12 => "天津",
     13 => "河北",
@@ -36,4 +36,4 @@ $area = [
     82 => "澳门",
     91 => "国外"
 ];
-return $area;
+return $province_code;

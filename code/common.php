@@ -417,32 +417,6 @@ function curl_post($url = '', $data = [], $timeout = 3000)
 }
 
 /**
- * 根据生日计算年龄
- * @param string $date 生日的年月日
- * @return int
- */
-function get_age($date = '')
-{
-    $age = 0;
-    $time = strtotime($date);
-    // 日期非法，则不处理
-    if (!$time) {
-        return $age;
-    }
-    // 计算时间年月日差
-    $date = date('Y-m-d', $time);
-    list($year, $month, $day) = explode("-", $date);
-    $age = date("Y", time()) - $year;
-    $diff_month = date("m") - $month;
-    $diff_day = date("d") - $day;
-    // 不满周岁年龄减1
-    if ($age < 0 || $diff_month < 0 || $diff_day < 0) {
-        $age--;
-    }
-    return $age;
-}
-
-/**
  * 获取毫秒数
  * @return string
  */
@@ -485,6 +459,158 @@ function transfer_show_time($time = 0)
     return $date;
 }
 
+// ***********身份证号的信息
+
+/**
+ * 校验是否为合法的身份证号
+ * @param string $id_card 身份证号
+ * @return bool
+ */
+function check_id_card($id_card = '')
+{
+    $pattern = '/^\d{6}((1[89])|(2\d))\d{2}((0\d)|(1[0-2]))((3[01])|([0-2]\d))\d{3}(\d|X)$/i';
+    $res = preg_match($pattern, $id_card) ? true : false;
+    return $res;
+}
+
+/**
+ * 通过身份证号计算年龄
+ * @param string $id_card 身份证号
+ * @return int
+ */
+function get_age_by_id_card($id_card = '')
+{
+    // 获取出生年月日
+    $year = substr($id_card, 6, 4);
+    $month = substr($id_card, 10, 2);
+    $day = substr($id_card, 12, 2);
+    // 计算时间年月日差
+    $age = date("Y", time()) - $year;
+    $diff_month = date("m") - $month;
+    $diff_day = date("d") - $day;
+    // 不满周岁年龄减1
+    if ($age < 0 || $diff_month < 0 || $diff_day < 0) {
+        $age--;
+    }
+    return $age;
+}
+
+/**
+ * 通过身份证获取所属星座
+ * @param string $id_card 身份证号
+ * @return string
+ */
+function get_constellation_by_card($id_card = '')
+{
+    // 截取生日的时间
+    $birthday = substr($id_card, 10, 4);
+    $month = substr($birthday, 0, 2);
+    $day = substr($birthday, 2);
+    // 判断时间范围获取星座
+    $constellation = "";
+    if (($month == 1 && $day >= 21) || ($month == 2 && $day <= 19)) $constellation = "水瓶座";
+    else if (($month == 2 && $day >= 20) || ($month == 3 && $day <= 20)) $constellation = "双鱼座";
+    else if (($month == 3 && $day >= 21) || ($month == 4 && $day <= 20)) $constellation = "白羊座";
+    else if (($month == 4 && $day >= 21) || ($month == 5 && $day <= 21)) $constellation = "金牛座";
+    else if (($month == 5 && $day >= 22) || ($month == 6 && $day <= 21)) $constellation = "双子座";
+    else if (($month == 6 && $day >= 22) || ($month == 7 && $day <= 22)) $constellation = "巨蟹座";
+    else if (($month == 7 && $day >= 23) || ($month == 8 && $day <= 23)) $constellation = "狮子座";
+    else if (($month == 8 && $day >= 24) || ($month == 9 && $day <= 23)) $constellation = "处女座";
+    else if (($month == 9 && $day >= 24) || ($month == 10 && $day <= 23)) $constellation = "天秤座";
+    else if (($month == 10 && $day >= 24) || ($month == 11 && $day <= 22)) $constellation = "天蝎座";
+    else if (($month == 11 && $day >= 23) || ($month == 12 && $day <= 21)) $constellation = "射手座";
+    else if (($month == 12 && $day >= 22) || ($month == 1 && $day <= 20)) $constellation = "魔羯座";
+    return $constellation;
+}
+
+/**
+ * 通过身份证获取所属生肖
+ * @param string $id_card 身份证号
+ * @return string
+ */
+function get_animal_by_card($id_card = '')
+{
+    // 获取出生年份
+    $start = 1901;
+    $end = substr($id_card, 6, 4);
+    $remainder = ($start - $end) % 12;
+    // 计算所属生肖
+    $animal = "";
+    if ($remainder == 1 || $remainder == -11) $animal = "鼠";
+    else if ($remainder == 0) $animal = "牛";
+    else if ($remainder == 11 || $remainder == -1) $animal = "虎";
+    else if ($remainder == 10 || $remainder == -2) $animal = "兔";
+    else if ($remainder == 9 || $remainder == -3) $animal = "龙";
+    else if ($remainder == 8 || $remainder == -4) $animal = "蛇";
+    else if ($remainder == 7 || $remainder == -5) $animal = "马";
+    else if ($remainder == 6 || $remainder == -6) $animal = "羊";
+    else if ($remainder == 5 || $remainder == -7) $animal = "猴";
+    else if ($remainder == 4 || $remainder == -8) $animal = "鸡";
+    else if ($remainder == 3 || $remainder == -9) $animal = "狗";
+    else if ($remainder == 2 || $remainder == -10) $animal = "猪";
+    return $animal;
+}
+
+/**
+ * 通过身份证获取性别
+ * @param string $id_card 身份证号
+ * @return string
+ */
+function get_sex($id_card = '')
+{
+    // 第十七位数字，偶数标识女性，奇数标识男性
+    $sex_num = substr($id_card, 16, 1);
+    $sex = $sex_num % 2 === 0 ? '女' : '男';
+    return $sex;
+}
+
+/**
+ * 通过身份证判断是否成年
+ * @param string $id_card 身份证号
+ * @return bool
+ */
+function check_adult($id_card = '')
+{
+    // 获取出生年月日
+    $year = substr($id_card, 6, 4);
+    $month = substr($id_card, 10, 2);
+    $day = substr($id_card, 12, 2);
+    // 18年的秒数
+    $adult_time = 18 * 365 * 24 * 60 * 60;
+    // 出生年月日的时间戳
+    $birthday_time = mktime(0, 0, 0, $month, $day, $year);
+    // 是否成年，默认未成年
+    $is_adult = false;
+    // 超过18岁则成年
+    if ((time() - $birthday_time) > $adult_time) {
+        $is_adult = true;
+    }
+    return $is_adult;
+}
+
+/**
+ * 通过身份证号获取省市区地址信息
+ * @param string $id_card
+ * @return array
+ */
+function get_address_by_id_card($id_card = '')
+{
+    // 先引入政府代码数组数据文件
+    require 'area_code.php';
+    require 'province_code.php';
+    // 获取政府代码前两位和前六位
+    $two_code = substr($id_card, 0, 2);
+    $six_code = substr($id_card, 0, 6);
+    // 获取城市信息
+    $province = $province_code[$two_code];
+    $address = $area_code[$six_code];
+    $res = [
+        'province' => $province,
+        'area' => $address
+    ];
+    return $res;
+}
+
 // ***********验证类
 
 /**
@@ -519,18 +645,6 @@ function check_email($email = '')
 {
     $pattern = '/([\w\-]+\@[\w\-]+\.[\w\-]+)/';
     $res = preg_match($pattern, $email) ? true : false;
-    return $res;
-}
-
-/**
- * 校验是否为合法的身份证号
- * @param string $id_card 身份证号
- * @return bool
- */
-function check_id_card($id_card = '')
-{
-    $pattern = '/^\d{6}((1[89])|(2\d))\d{2}((0\d)|(1[0-2]))((3[01])|([0-2]\d))\d{3}(\d|X)$/i';
-    $res = preg_match($pattern, $id_card) ? true : false;
     return $res;
 }
 
@@ -785,99 +899,6 @@ function get_first_char($str = '')
     else if ($asc >= -11847 and $asc <= -11056) $first_char = "Y";
     else if ($asc >= -11055 and $asc <= -10247) $first_char = "Z";
     return $first_char;
-}
-
-/**
- * 通过身份证获取所属星座
- * @param string $id_card 身份证号
- * @return string
- */
-function get_constellation_by_card($id_card = '')
-{
-    // 截取生日的时间
-    $birthday = substr($id_card, 10, 4);
-    $month = substr($birthday, 0, 2);
-    $day = substr($birthday, 2);
-    // 判断时间范围获取星座
-    $constellation = "";
-    if (($month == 1 && $day >= 21) || ($month == 2 && $day <= 19)) $constellation = "水瓶座";
-    else if (($month == 2 && $day >= 20) || ($month == 3 && $day <= 20)) $constellation = "双鱼座";
-    else if (($month == 3 && $day >= 21) || ($month == 4 && $day <= 20)) $constellation = "白羊座";
-    else if (($month == 4 && $day >= 21) || ($month == 5 && $day <= 21)) $constellation = "金牛座";
-    else if (($month == 5 && $day >= 22) || ($month == 6 && $day <= 21)) $constellation = "双子座";
-    else if (($month == 6 && $day >= 22) || ($month == 7 && $day <= 22)) $constellation = "巨蟹座";
-    else if (($month == 7 && $day >= 23) || ($month == 8 && $day <= 23)) $constellation = "狮子座";
-    else if (($month == 8 && $day >= 24) || ($month == 9 && $day <= 23)) $constellation = "处女座";
-    else if (($month == 9 && $day >= 24) || ($month == 10 && $day <= 23)) $constellation = "天秤座";
-    else if (($month == 10 && $day >= 24) || ($month == 11 && $day <= 22)) $constellation = "天蝎座";
-    else if (($month == 11 && $day >= 23) || ($month == 12 && $day <= 21)) $constellation = "射手座";
-    else if (($month == 12 && $day >= 22) || ($month == 1 && $day <= 20)) $constellation = "魔羯座";
-    return $constellation;
-}
-
-/**
- * 通过身份证获取所属生肖
- * @param string $id_card 身份证号
- * @return string
- */
-function get_animal_by_card($id_card = '')
-{
-    // 获取出生年份
-    $start = 1901;
-    $end = substr($id_card, 6, 4);
-    $remainder = ($start - $end) % 12;
-    // 计算所属生肖
-    $animal = "";
-    if ($remainder == 1 || $remainder == -11) $animal = "鼠";
-    else if ($remainder == 0) $animal = "牛";
-    else if ($remainder == 11 || $remainder == -1) $animal = "虎";
-    else if ($remainder == 10 || $remainder == -2) $animal = "兔";
-    else if ($remainder == 9 || $remainder == -3) $animal = "龙";
-    else if ($remainder == 8 || $remainder == -4) $animal = "蛇";
-    else if ($remainder == 7 || $remainder == -5) $animal = "马";
-    else if ($remainder == 6 || $remainder == -6) $animal = "羊";
-    else if ($remainder == 5 || $remainder == -7) $animal = "猴";
-    else if ($remainder == 4 || $remainder == -8) $animal = "鸡";
-    else if ($remainder == 3 || $remainder == -9) $animal = "狗";
-    else if ($remainder == 2 || $remainder == -10) $animal = "猪";
-    return $animal;
-}
-
-/**
- * 通过身份证获取性别
- * @param string $id_card 身份证号
- * @return string
- */
-function get_sex($id_card = '')
-{
-    // 第十七位数字，偶数标识女性，奇数标识男性
-    $sex_num = substr($id_card, 16, 1);
-    $sex = $sex_num % 2 === 0 ? '女' : '男';
-    return $sex;
-}
-
-/**
- * 通过身份证判断是否成年
- * @param string $id_card 身份证号
- * @return bool
- */
-function check_adult($id_card = '')
-{
-    // 获取出生年月日
-    $year = substr($id_card, 6, 4);
-    $month = substr($id_card, 10, 2);
-    $day = substr($id_card, 12, 2);
-    // 18年的秒数
-    $adult_time = 18 * 365 * 24 * 60 * 60;
-    // 出生年月日的时间戳
-    $birthday_time = mktime(0, 0, 0, $month, $day, $year);
-    // 是否成年，默认未成年
-    $is_adult = false;
-    // 超过18岁则成年
-    if ((time() - $birthday_time) > $adult_time) {
-        $is_adult = true;
-    }
-    return $is_adult;
 }
 
 /**
