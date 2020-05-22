@@ -624,11 +624,16 @@ function check_mobile($mobile = '')
     if (!is_numeric($mobile)) {
         return false;
     }
-    $pattern = '#^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,3,7,8]{1}\d{8}$|^18[\d]{9}$|^19[9]{1}\d{8}$#';
+    $pattern = '/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,3,7,8]{1}\d{8}$|^18[\d]{9}$|^19[9]{1}\d{8}$/';
     $res = preg_match($pattern, $mobile) ? true : false;
     return $res;
 }
 
+/**
+ * 校验是否为合法格式的电话号码
+ * @param string $telephone 电话号码
+ * @return bool
+ */
 function check_telephone($telephone = '')
 {
     $pattern = '/^(0[0-9]{2,3})?[-]?\d{7,8}$/';
@@ -663,12 +668,12 @@ function check_ip($ip = '')
 /**
  * 校验指定范围长度的字符串名称
  * @param string $name 名称
- * @param string $char 字符串类型：EN英文，CN中文，ALL全部字符
  * @param int $min 最小长度
  * @param int $max 最大长度
+ * @param string $char 字符串类型：EN英文，CN中文，ALL全部字符
  * @return bool
  */
-function check_name($name = '', $char = 'ALL', $min = 2, $max = 20)
+function check_name($name = '',$min = 2, $max = 20,  $char = 'ALL')
 {
     switch ($char) {
         case 'EN':
@@ -731,6 +736,8 @@ function check_time($time = '', $sep = ":")
     }
     return $res;
 }
+
+// ***********功能类
 
 /**
  * 获取指定长度的随机字符串
