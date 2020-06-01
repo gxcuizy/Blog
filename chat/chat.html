@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h2>基于Swoole的WebSocket聊天室</h2>
+        </div>
+        <div class="col-xs-9 col-sm-9 col-md-9">
+            <!--<div class="panel panel-info">
+                <div class="panel-heading">【张三】 2020-05-29 12:12:12</div>
+                <div class="panel-body">
+                    你好啊
+                </div>
+            </div>-->
+            <div class="form-group send-message">
+                <textarea name="message" rows="5" class="form-control col-xs-12 col-sm-12 col-md-12"
+                          placeholder="请输入聊天内容"></textarea>
+                <button type="button" class="btn btn-info btn-block send-button">发送</button>
+            </div>
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-3">
+            <h3>在线用户</h3>
+            <table class="table table-hover online-user">
+                <tr>
+                    <th>FD编号</th>
+                    <th>用户名</th>
+                </tr>
+                <!--<tr>
+                    <td>1</td>
+                    <td>nick</td>
+                </tr>-->
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+</script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script>
+    // 随机用户名
+    var user_name = 'user-' + Math.floor(Math.random() * 10000 + 1);
+    // 建立ws连接
+    var wsServer = 'ws://127.0.0.1:9502?user_name=' + user_name;
+    var websocket = new WebSocket(wsServer);
+    websocket.onmessage = function (evt) {
+        var data = jQuery.parseJSON(evt.data);
+        console.log(data);
+        if (data.type == 'open') {
+            // 刚连接，初始化用户数据
+            var user_list = data.data.user_list;
+            var open_html = '';
+            $.each(user_list, function (k, val) {
+                open_html += '<tr data-id="' + val.fd + '"><td>' + val.fd + '</td> <td>' + val.name + '</td> </tr>';
+            });
+            $('.online-user').append(open_html);
+        } else if (data.type == 'chat') {
+            // 聊天消息推送
+            var is_myself = '';
+            if (data.data.from == data.data.to) {
+                is_myself = ' text-right';
+            }
+            var chat_html = '<div class="panel panel-info">' +
+                    '<div class="panel-heading ' + is_myself + '">【' + data.data.user_name + '】 ' + data.data.time + '</div>' +
+                    '<div class="panel-body ' + is_myself + '">' + data.msg +
+                    '</div></div>';
+            $('.send-message').before(chat_html);
+        } else if (data.type == 'on') {
+            // 新用户连接
+            var on_html = '<tr data-id="' + data.data.fd + '"><td>' + data.data.fd + '</td> <td>' + data.data.name + '</td> </tr>';
+            $('.online-user').append(on_html);
+            // 上线欢迎
+            var notice_html = '<div class="panel panel-info">' +
+                    '<div class="panel-body text-center">' + data.msg +
+                    '</div></div>';
+            $('.send-message').before(notice_html);
+        } else if (data.type == 'off') {
+            // 用户关闭连接
+            $('.online-user').find('tr[data-id=' + data.data.fd + ']').remove();
+            // 下线提醒
+            var off_html = '<div class="panel panel-info">' +
+                    '<div class="panel-body text-center">' + data.msg +
+                    '</div></div>';
+            $('.send-message').before(off_html);
+        }
+    };
+    websocket.onopen = function (evt) {
+        console.log("Connected to WebSocket server.");
+    };
+    websocket.onclose = function (evt) {
+        alert('服务器已断开连接，即将开始重连');
+        window.location.reload();
+    };
+    websocket.onerror = function (evt, e) {
+        console.log('Error occured: ' + evt.data);
+    };
+    $(".send-button").off('click').on('click', function () {
+        var message = $("textarea[name=message]").val().trim();
+        if (message == '') {
+            alert('请输入聊天内容……');
+            return false;
+        }
+        websocket.send(message);
+        $("textarea[name=message]").val('');
+    });
+</script>
+</html>
