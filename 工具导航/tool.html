@@ -1,0 +1,439 @@
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css">
+    <title>实用工具导航</title>
+    <style>
+        .container {
+            display: table;
+            height: 100%;
+        }
+
+        .row {
+            display: table-cell;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary" style="min-height: 236px;">
+                <div class="panel-heading text-center"><h3>常用翻译网址</h3></div>
+                <div class="panel-body">
+                    <p> > <a href="https://translate.google.com" target="_blank">Google翻译</a></p>
+                    <p> > <a href="https://translate.alibaba.com" target="_blank">阿里翻译</a></p>
+                    <p> > <a href="https://fanyi.baidu.com" target="_blank">百度翻译</a></p>
+                    <p> > <a href="https://cn.bing.com/translator/" target="_blank">Bing翻译</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading text-center"><h3>阿里云隐私号短信内容</h3></div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="config_site_code">隐私号码：</label>
+                            <select class="selectpicker-secret form-control" data-live-search="true" id="secret_phone">
+                                <option value="">请选择</option>
+                                <option value="19999999999">19999999999</option>
+                                <option value="18888888888">18888888888</option>
+                                <option value="16666666666">16666666666</option>
+                            </select>
+                        </div>
+                    </form>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="down_config_id">最近多少分钟内：</label>
+                            <input type="text" class="form-control" id="minute_num" value="10" placeholder="请输入分钟数" style="width: 187px;">
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-info auto-get-sms-content">获取最新短信</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading text-center"><h3>CRM邮件操作</h3></div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="config_site_code">操作类型：</label>
+                            <select class="form-control" id="operate_type" style="width: 230px;">
+                                <option value="">请选择操作类型</option>
+                                <option value="1">Amazon邮件自动回复</option>
+                                <option value="2">Ebay邮件自动回复</option>
+                                <option value="3">Ebay邮件Reverse</option>
+                                <option value="4">小平台邮件自动回复</option>
+                                <option value="5">打开CRM邮件(批量用英文逗号,分隔)</option>
+                                <option value="6">查看iStore订单详情</option>
+                            </select>
+                        </div>
+                    </form>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="down_config_id">操作的ID：</label>
+                            <input type="text" class="form-control" id="operate_mail_id" placeholder="请输入操作ID" style="width: 230px;">
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-info auto-operate-crm-mail">自动处理此操作</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary" style="min-height: 236px;">
+                <div class="panel-heading text-center"><h3>自动获取邮箱配置ID</h3></div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="config_site_code">平台账号：</label>
+                            <select class="selectpicker-config form-control" data-live-search="true" id="config_site_code">
+                                <option value="">请选择</option>
+                                <option value="1">Amazon</option>
+                                <option value="2">Ebay</option>
+                                <option value="3">B2W</option>
+                            </select>
+                        </div>
+                    </form>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="down_config_id">邮箱配置ID：</label>
+                            <span id='mail_config_msg'>待自动获取</span>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-info auto-get-mail-config">获取邮箱配置ID</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading text-center"><h3>下载/重发邮箱邮件</h3></div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="down_site_code">平台账号：</label>
+                            <input type="text" class="form-control" id="down_site_code" placeholder="请输入账号" style="width: 233px;">
+                        </div>
+                    </form>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="down_config_id">邮箱配置ID：</label>
+                            <input type="text" class="form-control" id="down_config_id" placeholder="请输入ID" style="width: 220px;">
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-info down-mail">下载此账号邮件</button>
+                    <button type="button" class="btn btn-info again-send-mail" style="float: right;">重发此账号邮件</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading text-center"><h3>获取邮箱账号密码</h3></div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="set_site_code">平台账号：</label>
+                            <input type="text" class="form-control" id="set_site_code" placeholder="请输入账号" style="width: 230px;">
+                        </div>
+                    </form>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="mail_config_id">邮箱配置ID（不传默认主邮箱）：</label>
+                            <input type="text" class="form-control" id="mail_config_id" placeholder="请输入ID" style="width: 90px;">
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-info get-email-account">获取账号密码</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary" style="min-height: 256px;">
+                <div class="panel-heading text-center"><h3>邮件回复失败原因</h3></div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="error_site_code">平台账号：</label>
+                            <input type="text" class="form-control" id="error_site_code" placeholder="请输入账号" style="width: 230px;">
+                        </div>
+                    </form>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="mail_reply_error_msg">原因：</label>
+                            <span id='mail_reply_error_msg'>待查询</span>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-info auto-get-mail-reply-error">查询失败原因</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading text-center"><h3>常用系统</h3></div>
+                <div class="panel-body">
+                    <p> > <a href="" target="_blank">权限管理系统（Account）</a></p>
+                    <p> > <a href="" target="_blank">后台管理系统（iStore）</a></p>
+                    <p> > <a href="" target="_blank">邮件管理系统（CRM）</a></p>
+                    <p> > <a href="" target="_blank">协同商务系统（OA）</a></p>
+                    <p> > <a href="" target="_blank">平台店铺管理（堡垒机）</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading text-center"><h3>邮件回复日志</h3></div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="set_log_day">设置日志天数：</label>
+                            <input type="text" value="5" class="form-control" id="set_log_day" placeholder="日志天数" style="width: 100px;">
+                        </div>
+                    </form>
+                    <p> > <a href="javascript:void(0);" onclick="showLog(3);">邮件自动回复日志（Amazon）</a></p>
+                    <p> > <a href="javascript:void(0);" onclick="showLog(1);">邮件自动回复日志（Ebay）</a></p>
+                    <p> > <a href="javascript:void(0);" onclick="showLog(4);">邮件自动回复日志（小平台）</a></p>
+                    <p> > <a href="javascript:void(0);" onclick="showLog(2);">邮件自动回复日志（节假日）</a></p>
+                    <p> > <a href="javascript:void(0);" onclick="showLog(5);">卡顿任务自动回复日志（All）</a></p>
+                    <p> > <a href="javascript:void(0);" onclick="showLog(6);">多种类型的主动联系日志</a></p>
+                    <p> > <a href="javascript:void(0);" onclick="showLog(7);">主动发邮件后自动回复日志</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+<script>
+    // 初始化站点下拉搜索框
+    $(window).on('load', function () {
+        $('.selectpicker-config').selectpicker({
+            'width': 230,
+            'size': 'auto'
+        });
+        $('.selectpicker-secret').selectpicker({
+            'width': 230,
+            'size': 'auto'
+        });
+    });
+    // 设置日更背景图片
+    setBackgroundImage();
+
+    function setBackgroundImage() {
+        var date = new Date();
+        var current_day = date.getDay();
+        // 默认写死0
+        current_day = 0;
+        $('body').css('background-image', "url('" + current_day + ".jpg?v=1')");
+        $('body').css('background-repeat', "no-repeat");
+        $('body').css('background-size', "100% 100%");
+    }
+
+    // 获取短信内容
+    $('.auto-get-sms-content').off('click').on('click', function () {
+        var phone = $('#secret_phone').val();
+        if (!phone) {
+            layer.msg('请选择隐私号码');
+            return false;
+        }
+        var minute = $('#minute_num').val().trim();
+        if (!minute) {
+            layer.msg('请输入分钟数');
+            return false;
+        }
+        $.ajax({
+            url: "/crm/site/get-sms-content",
+            type: "POST",
+            async: false,
+            data: {phone: phone, minute: minute},
+            dataType: 'json',
+            success: function (res) {
+                if (res.code == 1) {
+                    layer.alert(res.msg, {skin: 'layui-layer-lan', title:'短信内容'});
+                } else {
+                    layer.msg(res.msg, {skin: 'layui-layer-lan', title:'温馨提示'});
+                }
+            }
+        });
+    });
+    // CRM邮件自动处理
+    $('.auto-operate-crm-mail').off('click').on('click', function () {
+        var operate_type = $('#operate_type').val();
+        if (!operate_type) {
+            layer.msg('请选择操作类型');
+            return false;
+        }
+        var mail_id = $('#operate_mail_id').val().trim();
+        if (!mail_id) {
+            layer.msg('请输入需要操作的ID');
+            return false;
+        }
+        $('#operate_mail_id').val('');
+        if (operate_type == 1) {
+            // amazon自动回复
+            window.open('');
+        } else if (operate_type == 2) {
+            // ebay自动回复
+            window.open('');
+        } else if (operate_type == 3) {
+            // ebay退款记录
+            window.open('');
+        } else if (operate_type == 4) {
+            // 小平台自动回复
+            window.open('');
+        } else if (operate_type == 5) {
+            // 批量打开邮件
+            $.ajax({
+                url: "/crm/site/get-mail-id-arr",
+                type: "POST",
+                async: false,
+                data: {mail_id: mail_id},
+                dataType: 'json',
+                success: function (res) {
+                    layer.confirm('是否需要同时打开订单信息', {icon: 3, title:'温馨提示'}, function (index) {
+                        layer.close(index);
+                        var userAgent = navigator.userAgent;
+                        var is_firefox = userAgent.indexOf("Firefox") > -1;
+                        $.each(res.data, function (key, mail_info) {
+                            if (is_firefox) {
+                                // 火狐浏览器，先打开订单
+                                if (mail_info.orders_code) {
+                                    window.open('');
+                                }
+                                // 后打开邮件
+                                window.open('');
+                            } else {
+                                // 其他浏览器，先打开邮件
+                                window.open('');
+                                // 后打开订单
+                                if (mail_info.orders_code) {
+                                    window.open('');
+                                }
+                            }
+                        });
+                    }, function (index) {
+                        layer.close(index);
+                        $.each(res.data, function (key, mail_info) {
+                            // 打开邮件
+                            window.open('');
+                        });
+                    });
+                }
+            });
+        } else if (operate_type == 6) {
+            // 查看单个订单详情
+            window.open('');
+        }
+    });
+    // 自动获取邮箱配置ID
+    $('.auto-get-mail-config').off('click').on('click', function () {
+        var site_code = $('#config_site_code').val().trim();
+        if (!site_code) {
+            layer.msg('请选择平台账号');
+            return false;
+        }
+        $.ajax({
+            url: "/crm/site/get-mail-config",
+            type: "POST",
+            async: false,
+            data: {site_code: site_code},
+            dataType: 'json',
+            success: function (res) {
+                $('#mail_config_msg').html(res.msg);
+                $('#down_site_code').val(res.site);
+                $('#set_site_code').val(res.site);
+                $('#error_site_code').val(res.site);
+                $('#mail_config_id').val(res.config);
+                $('#down_config_id').val(res.config);
+                layer.msg('获取邮箱配置成功');
+            }
+        });
+    });
+    // 下载邮箱邮件
+    $('.down-mail').off('click').on('click', function () {
+        var site_code = $('#down_site_code').val().trim();
+        var config_id = $('#down_config_id').val().trim();
+        if (!site_code) {
+            layer.msg('请输入平台账号');
+            return false;
+        }
+        if (!config_id) {
+            layer.msg('请输入邮箱配置ID');
+            return false;
+        }
+        $('#down_site_code').val('');
+        $('#down_config_id').val('');
+        window.open('');
+    });
+    // 重发邮箱邮件
+    $('.again-send-mail').off('click').on('click', function () {
+        var site_code = $('#down_site_code').val().trim();
+        var config_id = $('#down_config_id').val().trim();
+        if (!site_code) {
+            layer.msg('请输入平台账号');
+            return false;
+        }
+        $('#down_site_code').val('');
+        $('#down_config_id').val('');
+        window.open('');
+    });
+    // 获取账号密码
+    $('.get-email-account').off('click').on('click', function () {
+        var site_code = $('#set_site_code').val().trim();
+        var config_id = $('#mail_config_id').val().trim();
+        if (!site_code) {
+            layer.msg('请输入平台账号');
+            return false;
+        }
+        $('#set_site_code').val('');
+        $('#mail_config_id').val('');
+        $.ajax({
+            url: "/crm/site/get-email-account",
+            type: "POST",
+            async: false,
+            data: {site_code: site_code, config_id: config_id},
+            dataType: 'json',
+            success: function (res) {
+                layer.alert(res.msg, {skin: 'layui-layer-lan', title:'邮箱账号密码'});
+            }
+        });
+    });
+
+    // 查看日志
+    function showLog(type) {
+        var day = $('#set_log_day').val().trim();
+        if (!day) {
+            layer.msg('请设置日志天数');
+            return false;
+        }
+        window.open('');
+    }
+
+    // 自动获取最新邮件失败原因
+    $('.auto-get-mail-reply-error').off('click').on('click', function () {
+        var site_code = $('#error_site_code').val().trim();
+        if (!site_code) {
+            layer.msg('请输入平台账号');
+            return false;
+        }
+        $.ajax({
+            url: "/crm/site/get-fail-info",
+            type: "POST",
+            async: false,
+            data: {site_code: site_code},
+            dataType: 'json',
+            success: function (res) {
+                $('#mail_reply_error_msg').html(res.msg);
+                layer.msg('获取失败原因成功');
+            }
+        });
+    });
+</script>
+</html>
